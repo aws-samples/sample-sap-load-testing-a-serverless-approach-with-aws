@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SALESORDER_CREATEFROMDAT202>
+    <IDOC BEGIN="1">
+        <EDI_DC40 SEGMENT="1">
+            <TABNAM>EDI_DC40</TABNAM>
+            <MANDT>800</MANDT>
+            <DOCNUM>{{GENERATED_IDOC_NUMBER}}</DOCNUM>
+            <DOCREL>750</DOCREL>
+            <STATUS>30</STATUS>
+            <DIRECT>1</DIRECT>
+            <OUTMOD>2</OUTMOD>
+            <IDOCTYP>SALESORDER_CREATEFROMDAT202</IDOCTYP>
+            <MESTYP>SALESORDER_CREATEFROMDAT2</MESTYP>
+            <STDMES>SALESO</STDMES>
+            <SNDPOR>XI_00_800</SNDPOR>
+            <SNDPRT>LS</SNDPRT>
+            <SNDPRN>XI_00_800</SNDPRN>
+            <RCVPOR>A000000003</RCVPOR>
+            <RCVPRT>LS</RCVPRT>
+            <RCVPRN>T90CLNT090</RCVPRN>
+            <CREDAT>20210126</CREDAT>
+            <CRETIM>150437</CRETIM>
+            <SERIAL>{{GENERATED_MESSAGE_ID}}</SERIAL>
+        </EDI_DC40>
+        <E1SALESORDER_CREATEFROMDAT2 SEGMENT="1">
+            <BINARY_RELATIONSHIPTYPE>COD2</BINARY_RELATIONSHIPTYPE>
+            <E1BPSDHD1 SEGMENT="1">
+                <REFOBJTYPE>BUS2032</REFOBJTYPE>
+                <REFOBJKEY>9000000732</REFOBJKEY>
+                <DOC_TYPE>TA</DOC_TYPE>
+                <SALES_ORG>3020</SALES_ORG>
+                <DISTR_CHAN>30</DISTR_CHAN>
+                <DIVISION>00</DIVISION>
+                <REQ_DATE_H>20242212</REQ_DATE_H>
+                <INCOTERMS1>CPT</INCOTERMS1>
+                <INCOTERMS2>Palo Alto</INCOTERMS2>
+                <PMNTTRMS>ZB00</PMNTTRMS>
+                <PRICE_DATE>20241110</PRICE_DATE>
+                <PP_SEARCH>Bulk</PP_SEARCH>
+                <CURR_ISO>USD</CURR_ISO>
+            </E1BPSDHD1>
+            <E1BPSDHD1X SEGMENT="1">
+                <UPDATEFLAG>I</UPDATEFLAG>
+                <SALES_GRP>X</SALES_GRP>
+                <SALES_OFF>X</SALES_OFF>
+                <REQ_DATE_H>X</REQ_DATE_H>
+                <INCOTERMS1>X</INCOTERMS1>
+                <INCOTERMS2>X</INCOTERMS2>
+                <PMNTTRMS>X</PMNTTRMS>
+                <ORD_REASON>X</ORD_REASON>
+                <PRICE_DATE>X</PRICE_DATE>
+                <PURCH_NO_C>X</PURCH_NO_C>
+                <PP_SEARCH>X</PP_SEARCH>
+                <CURRENCY>X</CURRENCY>
+            </E1BPSDHD1X>
+            <E1BP_SENDER SEGMENT="1">
+                <LOG_SYSTEM>0M1RP75</LOG_SYSTEM>
+            </E1BP_SENDER>
+            <E1BPSDLS SEGMENT="1">
+                <COND_HANDL>X</COND_HANDL>
+            </E1BPSDLS>
+            <E1BPSDITM SEGMENT="1">
+                <ITM_NUMBER>000010</ITM_NUMBER>
+                <MATERIAL>P300804</MATERIAL>
+                <TARGET_QTY>50.0</TARGET_QTY>
+                <T_UNIT_ISO>EA</T_UNIT_ISO>
+                <ITEM_CATEG>TAN</ITEM_CATEG>
+                <SHORT_TEXT>Water Sprinkler</SHORT_TEXT>
+                <PMNTTRMS>ZB00</PMNTTRMS>
+                <S_UNIT_ISO>EA</S_UNIT_ISO>
+                <DLV_PRIO>2</DLV_PRIO>
+                <E1BPSDITM1 SEGMENT="1">
+                    <MAT_ENTRD>P300804</MAT_ENTRD>
+                </E1BPSDITM1>
+            </E1BPSDITM>
+            <E1BPSDITMX SEGMENT="1">
+                <ITM_NUMBER>000010</ITM_NUMBER>
+                <UPDATEFLAG>I</UPDATEFLAG>
+                <HG_LV_ITEM>X</HG_LV_ITEM>
+                <PO_ITM_NO>X</PO_ITM_NO>
+                <MATERIAL>X</MATERIAL>
+                <ALT_TO_ITM>X</ALT_TO_ITM>
+                <REASON_REJ>X</REASON_REJ>
+                <TARGET_QTY>X</TARGET_QTY>
+                <ITEM_CATEG>X</ITEM_CATEG>
+                <SHORT_TEXT>X</SHORT_TEXT>
+                <PMNTTRMS>X</PMNTTRMS>
+                <SALES_UNIT>X</SALES_UNIT>
+                <DLV_PRIO>X</DLV_PRIO>
+            </E1BPSDITMX>
+            <E1BPPARNR SEGMENT="1">
+                <PARTN_ROLE>AG</PARTN_ROLE>
+                <PARTN_NUMB>0000301800</PARTN_NUMB>
+            </E1BPPARNR>
+            <E1BPPARNR SEGMENT="1">
+                <PARTN_ROLE>WE</PARTN_ROLE>
+                <PARTN_NUMB>0000301800</PARTN_NUMB>
+                <ITM_NUMBER>000010</ITM_NUMBER>
+            </E1BPPARNR>
+            <E1BPPARNR SEGMENT="1">
+                <PARTN_ROLE>ZM</PARTN_ROLE>
+                <PARTN_NUMB>0000070436</PARTN_NUMB>
+            </E1BPPARNR>
+            <E1BPPARNR SEGMENT="1">
+                <PARTN_ROLE>RE</PARTN_ROLE>
+                <PARTN_NUMB>0000301800</PARTN_NUMB>
+            </E1BPPARNR>
+            <E1BPPARNR SEGMENT="1">
+                <PARTN_ROLE>WE</PARTN_ROLE>
+                <PARTN_NUMB>0000301800</PARTN_NUMB>
+            </E1BPPARNR>
+            <E1BPPARNR SEGMENT="1">
+                <PARTN_ROLE>RG</PARTN_ROLE>
+                <PARTN_NUMB>0000301800</PARTN_NUMB>
+            </E1BPPARNR>
+            <E1BPPARNR SEGMENT="1">
+                <PARTN_ROLE>RE</PARTN_ROLE>
+                <PARTN_NUMB>0000301800</PARTN_NUMB>
+                <ITM_NUMBER>000010</ITM_NUMBER>
+            </E1BPPARNR>
+            <E1BPPARNR SEGMENT="1">
+                <PARTN_ROLE>ZM</PARTN_ROLE>
+                <PARTN_NUMB>0000070436</PARTN_NUMB>
+                <ITM_NUMBER>000010</ITM_NUMBER>
+            </E1BPPARNR>
+            <E1BPPARNR SEGMENT="1">
+                <PARTN_ROLE>RG</PARTN_ROLE>
+                <PARTN_NUMB>0000301800</PARTN_NUMB>
+                <ITM_NUMBER>000010</ITM_NUMBER>
+            </E1BPPARNR>
+            <E1BPSCHDL SEGMENT="1">
+                <ITM_NUMBER>000010</ITM_NUMBER>
+                <SCHED_LINE>1</SCHED_LINE>
+                <REQ_DATE>20241112</REQ_DATE>
+                <DATE_TYPE>1</DATE_TYPE>
+                <REQ_QTY>50.0</REQ_QTY>
+            </E1BPSCHDL>
+            <E1BPSCHDLX SEGMENT="1">
+                <ITM_NUMBER>000010</ITM_NUMBER>
+                <SCHED_LINE>1</SCHED_LINE>
+                <UPDATEFLAG>I</UPDATEFLAG>
+                <REQ_DATE>X</REQ_DATE>
+                <DATE_TYPE>X</DATE_TYPE>
+                <REQ_QTY>X</REQ_QTY>
+            </E1BPSCHDLX>
+        </E1SALESORDER_CREATEFROMDAT2>
+    </IDOC>
+</SALESORDER_CREATEFROMDAT202>

@@ -1,0 +1,570 @@
+{
+  "Comment": "SAP Load and Performance Measuring function",
+  "StartAt": "Check Test Type",
+  "States": {
+    "Check Test Type": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$$.Execution.Input.LoadTestType",
+          "StringEquals": "infra",
+          "Next": "Infrastructure Warmup"
+        },
+        {
+          "Variable": "$$.Execution.Input.LoadTestType",
+          "StringEquals": "db",
+          "Next": "Database Load Test"
+        },
+        {
+          "Variable": "$$.Execution.Input.LoadTestType",
+          "StringEquals": "network",
+          "Next": "Start Network Delay"
+        }
+      ],
+      "Default": "Application Load Test"
+    },
+    "Database Load Test": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "Payload": {
+          "JOB_DEFINITION_ARN": "{{databaseK6BatchJobDefinitionArn}}",
+          "JOB_QUEUE_ARN": "{{batchJobQueueArn}}",
+          "K6_SCRIPT_S3_URI.$": "$$.Execution.Input.K6ScriptS3Uri",
+          "K6_PARAMETERS.$": "$$.Execution.Input.K6Options",  
+          "SECRET_NAME.$": "$$.Execution.Input.smsecret"
+        },
+        "FunctionName": "{{databaseK6SubmitJobFunctionArn}}"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2,
+          "JitterStrategy": "FULL"
+        }
+      ],
+      "Next": "Database Load Test Running?",
+      "ResultSelector": {
+        "jobId.$": "$.Payload.batchJob.jobId"
+      },
+      "Assign": {
+        "JobIdVar.$": "$.Payload.batchJob.jobId",
+        "testStatusVar": "RUNNING"
+      }
+    },
+    "Database Load Test Running?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Next": "Check Database Load Test Status",
+          "And": [
+            {
+              "Not": {
+                "Variable": "$testStatusVar",
+                "StringMatches": "SUCCEEDED"
+              }
+            },
+            {
+              "Not": {
+                "Variable": "$testStatusVar",
+                "StringMatches": "FAILED"
+              }
+            }
+          ]
+        }
+      ],
+      "Default": "Wait Load Test Complete"
+    },
+    "Check Database Load Test Status": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "FunctionName": "{{checkBatchJobStatusFunctionArn}}",
+        "Payload": {
+          "JobId.$": "$JobIdVar"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2,
+          "JitterStrategy": "FULL"
+        }
+      ],
+      "Next": "Wait Database Load Test Status",
+      "Assign": {
+        "testStatusVar.$": "$.Payload.JobStatus"
+      }
+    },
+    "Wait Database Load Test Status": {
+      "Type": "Wait",
+      "Seconds": 10,
+      "Next": "Database Load Test Running?"
+    },
+    "Application Load Test": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "{{applicationK6SubmitJobFunctionArn}}",
+        "Payload": {
+          "JOB_DEFINITION_ARN": "{{applicationK6BatchJobDefinitionArn}}",
+          "JOB_QUEUE_ARN": "{{batchJobQueueArn}}",
+          "K6_SCRIPT_S3_URI.$": "$$.Execution.Input.K6ScriptS3Uri",
+          "K6_PARAMETERS.$": "$$.Execution.Input.K6Options",  
+          "SECRET_NAME.$": "$$.Execution.Input.smsecret"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2,
+          "JitterStrategy": "FULL"
+        }
+      ],
+      "Next": "Application Load Test Running?",
+      "Assign": {
+        "JobIdVar.$": "$.Payload.batchJob.jobId",
+        "testStatusVar": "RUNNING"
+      },
+      "ResultSelector": {
+        "jobId.$": "$.Payload.batchJob.jobId"
+      }
+    },
+    "Application Load Test Running?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Next": "Check Application Load Test Status",
+          "And": [
+            {
+              "Not": {
+                "Variable": "$testStatusVar",
+                "StringMatches": "SUCCEEDED"
+              }
+            },
+            {
+              "Not": {
+                "Variable": "$testStatusVar",
+                "StringMatches": "FAILED"
+              }
+            }
+          ]
+        }
+      ],
+      "Default": "Wait Load Test Complete"
+    },
+    "Check Application Load Test Status": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "FunctionName": "{{checkBatchJobStatusFunctionArn}}",
+        "Payload": {
+          "JobId.$": "$JobIdVar"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2,
+          "JitterStrategy": "FULL"
+        }
+      ],
+      "Next": "Wait Application Load Test Status",
+      "Assign": {
+        "testStatusVar.$": "$.Payload.JobStatus"
+      }
+    },
+    "Wait Application Load Test Status": {
+      "Type": "Wait",
+      "Seconds": 60,
+      "Next": "Application Load Test Running?"
+    },
+    "Infrastructure Warmup": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::aws-sdk:lambda:invoke",
+      "Parameters": {
+        "FunctionName": "{{startAllTestsFunctionArn}}",
+        "Payload": {
+          "LoadTestType.$": "$$.Execution.Input.LoadTestType",
+          "sap_sm_secret.$": "$$.Execution.Input.smsecret",
+          "jobs": "4",
+          "duration": "5",
+          "cpu_load": "25",
+          "mem_load": "65"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Infrastructure Warmup Running?",
+      "ResultSelector": {
+        "Payload.$": "States.StringToJson($.Payload)"
+      },
+      "Assign": {
+        "testStatusVar": "RUNNING"
+      }
+    },
+    "Infrastructure Warmup Running?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Next": "Check Infrastructure Warmup Status",
+          "Variable": "$testStatusVar",
+          "StringMatches": "RUNNING"
+        }
+      ],
+      "Default": "Wait Before Infrastructure Load Test"
+    },
+    "Wait Before Infrastructure Load Test": {
+      "Type": "Wait",
+      "Seconds": 5,
+      "Next": "Infrastructure Load Test"
+    },
+    "Infrastructure Load Test": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::aws-sdk:lambda:invoke",
+      "Parameters": {
+        "FunctionName": "{{startAllTestsFunctionArn}}",
+        "Payload": {
+          "LoadTestType.$": "$$.Execution.Input.LoadTestType",
+          "sap_sm_secret.$": "$$.Execution.Input.smsecret",
+          "jobs": "16",
+          "duration": "10",
+          "cpu_load": "95",
+          "mem_load": "95"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Infrastructure Load Test Running?",
+      "ResultSelector": {
+        "Payload.$": "States.StringToJson($.Payload)"
+      },
+      "Assign": {
+        "testStatusVar": "RUNNING"
+      }
+    },
+    "Start Network Delay": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::aws-sdk:lambda:invoke",
+      "Parameters": {
+        "FunctionName": "{{startAllTestsFunctionArn}}",
+        "Payload": {
+          "LoadTestType.$": "$$.Execution.Input.LoadTestType",
+          "sap_sm_secret.$": "$$.Execution.Input.smsecret",
+          "delayms.$": "$$.Execution.Input.delayms",
+          "action": "start"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Wait Network Delay",
+      "ResultPath": null
+    },
+    "Wait Network Delay": {
+      "Type": "Wait",
+      "Next": "Stop Network Delay",
+      "SecondsPath": "$.duration"
+    },
+    "Stop Network Delay": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::aws-sdk:lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "FunctionName": "{{startAllTestsFunctionArn}}",
+        "Payload": {
+          "LoadTestType.$": "$$.Execution.Input.LoadTestType",
+          "sap_sm_secret.$": "$$.Execution.Input.smsecret",
+          "delayms.$": "$$.Execution.Input.delayms",
+          "action": "stop"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Wait Load Test Complete",
+      "Assign": {
+        "testStatusVar": "SUCCEEDED"
+      }
+    },
+    "Infrastructure Load Test Running?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Next": "Check Infrastructure Load Test Status",
+          "Variable": "$testStatusVar",
+          "StringMatches": "RUNNING"
+        }
+      ],
+      "Default": "Wait Before Infra Load Rampdown"
+    },
+    "Wait Before Infra Load Rampdown": {
+      "Type": "Wait",
+      "Seconds": 10,
+      "Next": "Infrastructure Rampdown"
+    },
+    "Infrastructure Rampdown": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::aws-sdk:lambda:invoke",
+      "Parameters": {
+        "FunctionName": "{{startAllTestsFunctionArn}}",
+        "Payload": {
+          "LoadTestType.$": "$$.Execution.Input.LoadTestType",
+          "sap_sm_secret.$": "$$.Execution.Input.smsecret",
+          "jobs": "4",
+          "duration": "5",
+          "cpu_load": "25",
+          "mem_load": "65"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Infrastructure Rampdown Running?",
+      "ResultSelector": {
+        "Payload.$": "States.StringToJson($.Payload)"
+      },
+      "Assign": {
+        "testStatusVar": "RUNNING"
+      }
+    },
+    "Infrastructure Rampdown Running?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Next": "Check Infrastructure Rampdown Status",
+          "Variable": "$testStatusVar",
+          "StringMatches": "RUNNING"
+        }
+      ],
+      "Default": "Wait Load Test Complete"
+    },
+    "Wait Load Test Complete": {
+      "Type": "Wait",
+      "Seconds": 30,
+      "Next": "Check Load Test Status"
+    },
+    "Check Load Test Status": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Next": "Fail",
+          "Variable": "$testStatusVar",
+          "StringMatches": "FAILED"
+        }
+      ],
+      "Default": "Is Analytics Active?"
+    },
+    "Fail": {
+      "Type": "Fail"
+    },
+    "Is Analytics Active?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Next": "Store Cloudwatch Metrics",
+          "Variable": "$$.Execution.Input.StoreResultsInS3",
+          "StringEquals": "y"
+        }
+      ],
+      "Default": "Success"
+    },
+    "Store Cloudwatch Metrics": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::aws-sdk:lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "FunctionName": "{{cwPushMetricsFunction}}",
+        "Payload": {
+          "LoadTestType.$": "$$.Execution.Input.LoadTestType",
+          "start_time.$": "$$.Execution.StartTime",
+          "end_time.$": "$$.State.EnteredTime",
+          "sap_sm_secret.$": "$$.Execution.Input.smsecret",
+          "test_run_id.$": "$$.Execution.Name"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2,
+          "JitterStrategy": "FULL"
+        }
+      ],
+      "Next": "Success"
+    },
+    "Success": {
+      "Type": "Succeed"
+    },
+    "Check Infrastructure Rampdown Status": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "Payload.$": "$",
+        "FunctionName": "{{checkSSMFunctionArn}}"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Wait Check Infrastructure Rampdown Status",
+      "Assign": {
+        "testStatusVar.$": "$.Payload.JobStatus"
+      }
+    },
+    "Wait Check Infrastructure Rampdown Status": {
+      "Type": "Wait",
+      "Seconds": 20,
+      "Next": "Infrastructure Rampdown Running?"
+    },
+    "Check Infrastructure Load Test Status": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "Payload.$": "$",
+        "FunctionName": "{{checkSSMFunctionArn}}"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Wait Check Infrastructure Load Test Status",
+      "Assign": {
+        "testStatusVar.$": "$.Payload.JobStatus"
+      }
+    },
+    "Wait Check Infrastructure Load Test Status": {
+      "Type": "Wait",
+      "Seconds": 60,
+      "Next": "Infrastructure Load Test Running?"
+    },
+    "Check Infrastructure Warmup Status": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "Payload.$": "$",
+        "FunctionName": "{{checkSSMFunctionArn}}"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Wait Check Infrastructure Warmup Status",
+      "Assign": {
+        "testStatusVar.$": "$.Payload.JobStatus"
+      }
+    },
+    "Wait Check Infrastructure Warmup Status": {
+      "Type": "Wait",
+      "Seconds": 5,
+      "Next": "Infrastructure Warmup Running?"
+    }
+  }
+}

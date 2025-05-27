@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <meta http-equiv="Content-Security-Policy" content=""> -->
+    <title>SAP Load Test UI</title>
+    <style>
+      .logo-container {
+        display: flex;
+        justify-content: center;
+        padding: 20px 0;
+        background-color: #232f3e;
+      }
+      .logo {
+        max-width: 200px;
+        height: auto;
+      }
+      .header-container {
+        position: relative;
+        background-color: #232f3e;
+      }
+      .info-box {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 300px;
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        color: #333;
+      }
+      .info-box h3 {
+        margin-top: 0;
+        color: #232f3e;
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+      .info-box p {
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 15px;
+      }
+      .info-box a {
+        display: inline-block;
+        background-color: #ff9900;
+        color: #232f3e;
+        text-decoration: none;
+        padding: 8px 15px;
+        border-radius: 4px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+      }
+      .info-box a:hover {
+        background-color: #ffac33;
+      }
+      @media (max-width: 768px) {
+        .info-box {
+          position: static;
+          width: 90%;
+          margin: 0 auto 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header-container">
+      <div class="logo-container">
+        <img src="/logo.svg" alt="SAP Load Test Logo" class="logo" />
+      </div>
+      <div class="info-box">
+        <h3>About SAP Load Tests</h3>
+        <p>This application helps you create, manage, and monitor load tests for SAP ERP or S/4HANA systems.</br> 
+          The tool support SAP on AWS and SAP RISE environments</br></p>
+        <a href="https://docs.aws.amazon.com/sap/latest/sap-netweaver/load-testing.html" target="_blank">View Documentation</a>
+      </div>
+    </div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
