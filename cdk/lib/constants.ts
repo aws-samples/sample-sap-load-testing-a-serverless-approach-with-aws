@@ -20,7 +20,6 @@ export const LAMBDA_GET_PRESIGNED_S3_URL_FUNCTION_NAME = `${LAMBDA_PREFIX}-get-p
 export const K6_EC2_INSTANCE_NAME = `${PROJECT_PREFIX}-k6-load-injector`;
 export const UI_API_GATEWAY_NAME = `${PROJECT_PREFIX}-ui-api`;
 
-export const SAP_SYSTEM_ASSETS_S3_PREFIX = "SAPSystemAssets";
 export const EXECUTIONS_ASSETS_S3_PREFIX = "TestExecutions";
 
 export const APPLICATION_PREFIX = "APPLICATION_K6";

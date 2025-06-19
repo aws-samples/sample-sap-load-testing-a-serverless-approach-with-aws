@@ -23,7 +23,6 @@ export class LambdaAPIConstruct extends Construct {
     props: {
       stateMachine: cdk.aws_stepfunctions.StateMachine;
       s3BucketForArtefacts: cdk.aws_s3.Bucket;
-      s3SapSystemPrefix: string;
     }
   ) {
     super(scope, id);

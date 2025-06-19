@@ -286,6 +286,9 @@ export class BatchConstruct extends Construct {
         {
           name: "CW_CONFIG_CONTENT",
           value: `{
+                          \"agent\":{  
+                              \"metrics_collection_interval\": 10
+                          },
                           \"metrics\": {
                               \"namespace\": \"${namespace}\",
                               \"metrics_collected\": {

@@ -8,7 +8,6 @@ import { CognitoConstruct } from "./apigw-components/cognito-construct";
 import { APIGatewayConstruct } from "./apigw-components/apigw-construct";
 import { LambdaAPIConstruct } from "./apigw-components/api-lambda-construct";
 import { UserPool, UserPoolClient } from "aws-cdk-lib/aws-cognito";
-import { SAP_SYSTEM_ASSETS_S3_PREFIX } from "../constants";
 import * as mustache from "mustache";
 import * as fs from "fs";
 
@@ -45,7 +44,6 @@ export class FrontendAPIConstruct extends Construct {
     const lambda = new LambdaAPIConstruct(this, "LambdaAPIConstruct", {
       stateMachine: props.stateMachine,
       s3BucketForArtefacts: props.s3BucketForArtefacts,
-      s3SapSystemPrefix: SAP_SYSTEM_ASSETS_S3_PREFIX,
     });
 
     const apiGateway = new APIGatewayConstruct(this, "APIGatewayConstruct", {

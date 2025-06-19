@@ -9,7 +9,6 @@ import * as s3deploy from "aws-cdk-lib/aws-s3-deployment";
 import {
   ARTEFACTS_S3_BUCKET_NAME_PREFIX,
   CLOUDWATCH_DASHBOARD_NAME_PREFIX,
-  SAP_SYSTEM_ASSETS_S3_PREFIX,
 } from "../constants";
 
 export interface SAPSystemDefinitionStackProps extends cdk.StackProps {

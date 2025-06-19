@@ -6,7 +6,6 @@ import {
   ARTEFACTS_S3_BUCKET_NAME_PREFIX,
   EXECUTIONS_ASSETS_S3_PREFIX,
   METRICS_S3_BUCKET_NAME_PREFIX,
-  SAP_SYSTEM_ASSETS_S3_PREFIX,
 } from "../constants";
 import { NagSuppressions } from "cdk-nag";
 
@@ -62,14 +61,6 @@ export class StorageConstruct extends Construct {
         reason: "Access logs are not needed for this bucket",
       },
     ]);
-
-    new s3deploy.BucketDeployment(this, "DeploySAPSystemAssetsDirectory", {
-      sources: [
-        cdk.aws_s3_deployment.Source.asset("resources/SAPSystemAssets"),
-      ],
-      destinationBucket: bucketForArtefacts,
-      destinationKeyPrefix: SAP_SYSTEM_ASSETS_S3_PREFIX,
-    });
 
     new s3deploy.BucketDeployment(this, "DeployTestExecutionsAssetsDirectory", {
       sources: [cdk.aws_s3_deployment.Source.asset("resources/dummy")],
