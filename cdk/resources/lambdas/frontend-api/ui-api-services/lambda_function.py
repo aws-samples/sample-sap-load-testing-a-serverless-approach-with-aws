@@ -250,10 +250,13 @@ def launch_new_test(event, context):
         ## test type based on k6 scripts
         if test_type == "application" or test_type == "database":
             k6_options = ""
-            if "k6Options" in body:
-                k6_options = body["k6Options"]
-            
-            k6_file_s3_url = body["k6FileS3Url"]
+
+            if "K6Options" in body:
+                k6_options = body["K6Options"]
+            else:
+                print("K6Options is not present")
+
+            k6_file_s3_url = body["K6FileS3Url"]
             
             step_function_parameters = {
                 "executionId": execution_id,

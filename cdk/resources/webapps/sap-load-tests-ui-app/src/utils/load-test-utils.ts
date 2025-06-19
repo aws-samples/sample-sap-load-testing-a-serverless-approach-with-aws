@@ -94,8 +94,8 @@ export async function createNewTest(
   ///prepare the submit form based on the test Type
   switch (formData.testType) {
     case "application":
-      if (formData.k6Options != undefined && formData.k6Options != "") {
-        testDataToSubmit["k6Options"] = formData.k6Options;
+      if (formData.K6Options != undefined && formData.K6Options != "") {
+        testDataToSubmit["K6Options"] = formData.K6Options;
       }
 
       if (formData.k6File instanceof File) {
@@ -113,7 +113,7 @@ export async function createNewTest(
           await uploadFileToS3(presignedUrlResponse.presigned_url, file);
 
           // testDataToSubmit["k6FileS3Key"] = k6FileS3Key;
-          testDataToSubmit["k6FileS3Url"] = presignedUrlResponse.s3_uri;
+          testDataToSubmit["K6FileS3Url"] = presignedUrlResponse.s3_uri;
         } catch (err) {
           console.log("Error:", err);
         }
@@ -121,8 +121,8 @@ export async function createNewTest(
 
       break;
     case "database":
-      if (formData.k6Options != undefined && formData.k6Options != "") {
-        testDataToSubmit["k6Options"] = formData.k6Options;
+      if (formData.K6Options != undefined && formData.K6Options != "") {
+        testDataToSubmit["K6Options"] = formData.K6Options;
       }
 
       if (formData.k6File instanceof File) {
@@ -140,7 +140,7 @@ export async function createNewTest(
           await uploadFileToS3(presignedUrlResponse.presigned_url, file);
 
           // testDataToSubmit["k6FileS3Key"] = k6FileS3Key;
-          testDataToSubmit["k6FileS3Url"] = presignedUrlResponse.s3_uri;
+          testDataToSubmit["K6FileS3Url"] = presignedUrlResponse.s3_uri;
         } catch (err) {
           console.log("Error:", err);
         }
@@ -202,12 +202,12 @@ export async function runExistingTest(
     switch (jsonData.execution.testType) {
       case "application":
         if (
-          jsonData.execution.k6Options != undefined &&
-          jsonData.execution.k6Options != ""
+          jsonData.execution.K6Options != undefined &&
+          jsonData.execution.K6Options != ""
         ) {
-          testDataToSubmit["k6Options"] = jsonData.execution.k6Options;
+          testDataToSubmit["K6Options"] = jsonData.execution.K6Options;
         }
-        testDataToSubmit["k6FileS3Url"] = jsonData.execution.K6ScriptS3Uri;
+        testDataToSubmit["K6FileS3Url"] = jsonData.execution.K6ScriptS3Uri;
         break;
       case "database":
         //handle here the additional parameters

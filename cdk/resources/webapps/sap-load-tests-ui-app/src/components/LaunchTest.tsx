@@ -18,7 +18,7 @@ interface FormData {
 
   //application
   k6File: File | null;
-  k6Options: string;
+  K6Options: string;
 
   //network
   delayms: string;
@@ -30,7 +30,7 @@ export const LaunchTest: React.FC<Props> = ({ accessToken, sapSystems }) => {
     testType: "application",
     testName: "",
     k6File: null,
-    k6Options: "",
+    K6Options: "",
     sapSID: "",
     enableAnalytics: false,
     delayms: "",
@@ -62,7 +62,7 @@ export const LaunchTest: React.FC<Props> = ({ accessToken, sapSystems }) => {
       testName: "",
       // k6File: null,
       k6File: null,
-      k6Options: "",
+      K6Options: "",
       sapSID: "",
       enableAnalytics: false,
       delayms: "",
@@ -270,9 +270,9 @@ export const LaunchTest: React.FC<Props> = ({ accessToken, sapSystems }) => {
                       <Form.Control
                         as="textarea"
                         rows={3}
-                        id="k6Options"
-                        name="k6Options"
-                        value={formData.k6Options}
+                        id="K6Options"
+                        name="K6Options"
+                        value={formData.K6Options}
                         onChange={handleInputChange}
                       />
                     </Form.Group>
@@ -410,9 +410,9 @@ export const LaunchTest: React.FC<Props> = ({ accessToken, sapSystems }) => {
                       <Form.Control
                         as="textarea"
                         rows={3}
-                        id="k6Options"
-                        name="k6Options"
-                        value={formData.k6Options}
+                        id="K6Options"
+                        name="K6Options"
+                        value={formData.K6Options}
                         onChange={handleInputChange}
                       />
                     </Form.Group>
