@@ -228,18 +228,18 @@ export class CloudWatchDashboardConstruct extends Construct {
       height: 3,
     });
 
-    const sapUsersSingleWidget = new cloudwatch.SingleValueWidget({
-      title: "Users",
+    const sapIdocsSingleWidget = new cloudwatch.SingleValueWidget({
+      title: "Inbound Idocs",
       region: region,
       period: cdk.Duration.seconds(300),
       metrics: [
         new cloudwatch.Metric({
           namespace: "sap-monitor",
-          metricName: "USERS",
+          metricName: "WE02_INBOUND",
           dimensionsMap: {
             bySID: props.sapSystem.sid,
           },
-          label: "Number of Users",
+          label: "Inbound Idocs",
         }),
       ],
       width: 3,
@@ -330,7 +330,7 @@ export class CloudWatchDashboardConstruct extends Construct {
             cpuSingleAvgWidget,
             cpuMemoryAvgWidget,
             sapDialogReponseTypeSingleWidget,
-            sapUsersSingleWidget,
+            sapIdocsSingleWidget,
             sapSystemDumpsWidget
           ),
           new cloudwatch.Row(k6VirtualUserWidget, k6RequestsPerSecondsWidget),
