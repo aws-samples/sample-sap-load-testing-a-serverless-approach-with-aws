@@ -52,7 +52,7 @@ The solution consists of the following components:
 3. **Analytics Stack (Optional)**: Data analysis components including:
    - Glue database and tables
    - Athena workgroup for SQL queries
-   - IAM roles for analytics access
+   - IAM roles for analytics accesshttps://github.com/aws-samples/sample-sap-load-testing-a-serverless-approach-with-aws/blob/main/README.md#prerequisites
 
 ### Cost
 
@@ -68,11 +68,12 @@ Before deploying this solution, you need:
 
 1. AWS CLI and CDK installed and configured
 2. Node.js and npm installed
-3. An existing VPC with appropriate subnets
-4. An SAP system running on EC2 instances
-5. Administrator email address for notifications
-6. Appropriate IAM permissions to deploy the resources
-7. For infrastructure based load tests, the following tools need to be installed at Operating System level
+3. Docker installed and started (eg: DockerDesktop)
+4. An existing VPC with appropriate subnets
+5. An SAP system running on EC2 instances
+6. Administrator email address for notifications
+7. Appropriate IAM permissions to deploy the resources
+8. For infrastructure based load tests, the following tools need to be installed at Operating System level
 
 - stress-ng --> https://github.com/ColinIanKing/stress-ng
 - fio --> https://github.com/axboe/fio
@@ -80,6 +81,12 @@ Before deploying this solution, you need:
 ## Deployment Steps
 
 ### Infrastructure Deployment
+
+Move to the project folder and move to cdk directory. 
+```bash
+  cd sample-sap-load-testing-a-serverless-approach-with-aws/cdk
+  npm install
+```
 
 Deploy the core infrastructure stack:
 
