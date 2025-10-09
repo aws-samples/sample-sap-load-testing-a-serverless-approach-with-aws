@@ -10,6 +10,7 @@ import path = require("path");
 import {
   GLUE_DATABASE_NAME,
   GLUE_TABLE_NAME,
+  ATHENA_WORKGROUP_NAME,
   LAMBDA_CW_PUSH_METRICS_FUNCTION_NAME,
   SECRET_MANAGER_NAME_PREFIX,
 } from "../constants";
@@ -212,12 +213,9 @@ export class AnalyticsStack extends cdk.NestedStack {
       "skip.header.line.count": "1",
     });
 
-    let athenaWorkgroupName;
-    athenaWorkgroupName = "AthenaWorkgroupSAPLoadTests";
-
     // Create an Athena workgroup
     new athena.CfnWorkGroup(this, "AthenaWorkgroup", {
-      name: athenaWorkgroupName,
+      name: ATHENA_WORKGROUP_NAME,
       description: "Athena workgroup",
       workGroupConfiguration: {
         enforceWorkGroupConfiguration: true,

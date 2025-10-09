@@ -1,4 +1,4 @@
-import config from "../confg";
+import config from "../config";
 import LoadTest from "../types/LoadTest";
 import { PresignedUrlResponse } from "../types/NewTest";
 

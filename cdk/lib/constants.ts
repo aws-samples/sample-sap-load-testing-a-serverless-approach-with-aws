@@ -30,3 +30,7 @@ export const DATABASE_PREFIX = "DATABASE_K6";
 //analytics
 export const GLUE_DATABASE_NAME = "sap_load_tests";
 export const GLUE_TABLE_NAME = "cw_metrics";
+export const ATHENA_WORKGROUP_NAME = "AthenaWorkgroupSAPLoadTests";
+
+//grafana
+export const GRAFANA_WORKSPACE_NAME = `${PROJECT_PREFIX}-grafana-workspace`;
