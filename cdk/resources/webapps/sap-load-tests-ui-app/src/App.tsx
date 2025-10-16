@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 // import "./App.css";
 import LoadTestTable from "./components/Table";
-import config from "./confg";
+import config from "./config";
 import { useAuth } from "react-oidc-context";
 import { LaunchTest } from "./components/LaunchTest";
 import { Button, Container } from "react-bootstrap";

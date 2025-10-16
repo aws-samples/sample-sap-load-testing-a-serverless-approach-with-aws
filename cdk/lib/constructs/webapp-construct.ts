@@ -310,7 +310,7 @@ export class WebApp extends Construct {
       true
     );
 
-    // get current timestamp
+    // get current timestamp - updated for modernized webapp deployment
     const timestamp = new Date().getTime().toString();
 
     new cdk.CfnResource(scope, `WebApp-${id}`, {

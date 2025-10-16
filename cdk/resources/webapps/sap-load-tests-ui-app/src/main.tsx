@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import App from "./App.tsx";
 import { AuthProvider } from "react-oidc-context";
-import config from "./confg.ts";
+import config from "./config";
 import React from "react";
 
 const cognitoAuthConfig = {
