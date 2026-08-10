@@ -39,9 +39,8 @@ export class WebApp extends Construct {
       scope,
       `SAPLoadTestApplicationBucket`,
       {
-        bucketName: `${WEBAPP_S3_BUCKET_NAME_PREFIX}-${
-          cdk.Stack.of(this).account
-        }-${cdk.Stack.of(this).region}`,
+        bucketName: `${WEBAPP_S3_BUCKET_NAME_PREFIX}-${cdk.Stack.of(this).account
+          }-${cdk.Stack.of(this).region}`,
         removalPolicy: cdk.RemovalPolicy.DESTROY,
         blockPublicAccess: cdk.aws_s3.BlockPublicAccess.BLOCK_ALL,
         encryption: cdk.aws_s3.BucketEncryption.S3_MANAGED,
@@ -61,12 +60,10 @@ export class WebApp extends Construct {
       ]
     );
 
-    const cognitoAuthorityOrigin = `https://cognito-idp.${
-      cdk.Stack.of(this).region
-    }.amazonaws.com/`;
-    const cognitoDomainOrigin = `https://${props.cognitoDomain}.auth.${
-      cdk.Stack.of(this).region
-    }.amazoncognito.com/`;
+    const cognitoAuthorityOrigin = `https://cognito-idp.${cdk.Stack.of(this).region
+      }.amazonaws.com/`;
+    const cognitoDomainOrigin = `https://${props.cognitoDomain}.auth.${cdk.Stack.of(this).region
+      }.amazoncognito.com/`;
 
     const accessLogsBucket = new cdk.aws_s3.Bucket(
       scope,
@@ -108,7 +105,7 @@ export class WebApp extends Construct {
               responseHeadersPolicyName: `${cdk.Aws.STACK_NAME}${id}${cdk.Aws.REGION}ResponseHeadersPolicy`,
               securityHeadersBehavior: {
                 contentSecurityPolicy: {
-                  contentSecurityPolicy: `default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src 'self' ${cognitoAuthorityOrigin} ${cognitoDomainOrigin} ${props.restApiBaseEndpoint} https://${props.s3BucketForArtefacts.bucketDomainName}; img-src 'self' data: https:; font-src 'self' data:; object-src 'none'; base-uri 'self';`,
+                  contentSecurityPolicy: `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' ${cognitoAuthorityOrigin} ${cognitoDomainOrigin} ${props.restApiBaseEndpoint} https://${props.s3BucketForArtefacts.bucketDomainName}; img-src 'self' data: https:; font-src 'self' data:; object-src 'none'; base-uri 'self';`,
                   override: true,
                 },
                 contentTypeOptions: {
@@ -191,8 +188,7 @@ export class WebApp extends Construct {
         onUpdate: describeUserPoolClientAction,
         policy: AwsCustomResourcePolicy.fromSdkCalls({
           resources: [
-            `arn:aws:cognito-idp:${cdk.Stack.of(this).region}:${
-              cdk.Stack.of(this).account
+            `arn:aws:cognito-idp:${cdk.Stack.of(this).region}:${cdk.Stack.of(this).account
             }:userpool/${props.cognitoUserPool.userPoolId}`,
           ],
         }),
@@ -257,8 +253,7 @@ export class WebApp extends Construct {
         },
         policy: AwsCustomResourcePolicy.fromSdkCalls({
           resources: [
-            `arn:aws:cognito-idp:${cdk.Stack.of(this).region}:${
-              cdk.Stack.of(this).account
+            `arn:aws:cognito-idp:${cdk.Stack.of(this).region}:${cdk.Stack.of(this).account
             }:userpool/${props.cognitoUserPool.userPoolId}`,
           ],
         }),
@@ -334,7 +329,7 @@ export class WebApp extends Construct {
 }
 
 class OriginOriginAccessControlNameFix implements cdk.IAspect {
-  constructor(private name: string) {}
+  constructor(private name: string) { }
   public visit(node: IConstruct): void {
     if (node instanceof cdk.aws_cloudfront.CfnOriginAccessControl) {
       node.addPropertyOverride("OriginAccessControlConfig.Name", this.name);
