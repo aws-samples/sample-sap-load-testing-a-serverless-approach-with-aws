@@ -12,7 +12,7 @@ export default defineConfig({
 //     headers: {
 //       "Content-Security-Policy": `
 //         default-src 'self';
-//         script-src 'self' 'unsafe-inline' 'unsafe-eval';
+//         script-src 'self';
 //         style-src 'self' 'unsafe-inline';
 //         connect-src 'self'
 //         https://cognito-idp.us-east-1.amazonaws.com/us-east-1_WRxW7Rept

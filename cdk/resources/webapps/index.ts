@@ -113,7 +113,7 @@ async function configureContentSecurityPolicy(
   temp_dir: string
 ) {
   const csp = `default-src 'self';
-  script-src 'self' 'unsafe-inline' 'unsafe-eval';
+  script-src 'self';
   style-src 'self' 'unsafe-inline';
   connect-src 'self' 
     ${config.cognitoAuthority}
